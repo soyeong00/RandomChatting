@@ -1,5 +1,4 @@
-﻿
-// RandomChattingDlg.cpp: 구현 파일
+﻿// RandomChattingDlg.cpp: 구현 파일
 //
 
 #include "pch.h"
@@ -12,7 +11,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
 
 class CAboutDlg : public CDialogEx
@@ -20,12 +18,12 @@ class CAboutDlg : public CDialogEx
 public:
 	CAboutDlg();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 // 구현입니다.
@@ -45,10 +43,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
-
 // CRandomChattingDlg 대화 상자
-
-
 
 CRandomChattingDlg::CRandomChattingDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_RANDOMCHATTING_DIALOG, pParent)
@@ -65,8 +60,8 @@ BEGIN_MESSAGE_MAP(CRandomChattingDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CRandomChattingDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
-
 
 // CRandomChattingDlg 메시지 처리기
 
@@ -81,13 +76,13 @@ BOOL CRandomChattingDlg::OnInitDialog()
 	ASSERT(IDM_ABOUTBOX < 0xF000);
 
 	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != nullptr)
+	if(pSysMenu != nullptr)
 	{
 		BOOL bNameValid;
 		CString strAboutMenu;
 		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
 		ASSERT(bNameValid);
-		if (!strAboutMenu.IsEmpty())
+		if(!strAboutMenu.IsEmpty())
 		{
 			pSysMenu->AppendMenu(MF_SEPARATOR);
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
@@ -106,7 +101,7 @@ BOOL CRandomChattingDlg::OnInitDialog()
 
 void CRandomChattingDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
-	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+	if((nID & 0xFFF0) == IDM_ABOUTBOX)
 	{
 		CAboutDlg dlgAbout;
 		dlgAbout.DoModal();
@@ -123,7 +118,7 @@ void CRandomChattingDlg::OnSysCommand(UINT nID, LPARAM lParam)
 
 void CRandomChattingDlg::OnPaint()
 {
-	if (IsIconic())
+	if(IsIconic())
 	{
 		CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
 
@@ -153,3 +148,23 @@ HCURSOR CRandomChattingDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+#include "DialogCommunicationExample1.h"
+#include "DialogCommunicationExample2.h"
+
+void CRandomChattingDlg::OnBnClickedButton1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// Dialog 2개를 생성 후 화면에 전시합니다
+	DialogCommunicationExample1* Dialog1 = new DialogCommunicationExample1();
+	DialogCommunicationExample2* Dialog2 = new DialogCommunicationExample2();
+
+	Dialog1->Create(IDD_DialogCommunicationExample1);
+	Dialog1->ShowWindow(SW_SHOW);
+
+	Dialog2->Create(IDD_DialogCommunicationExample2);
+	Dialog2->ShowWindow(SW_SHOW);
+
+	Dialog1->Dialog2 = Dialog2;
+	Dialog2->Dialog1 = Dialog1;
+}
