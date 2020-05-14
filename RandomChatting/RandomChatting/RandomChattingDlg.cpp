@@ -7,6 +7,10 @@
 #include "RandomChattingDlg.h"
 #include "afxdialogex.h"
 
+#include "DialogCommunicationExample1.h"
+#include "DialogCommunicationExample2.h"
+#include "MainDialog.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -61,6 +65,7 @@ BEGIN_MESSAGE_MAP(CRandomChattingDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CRandomChattingDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CRandomChattingDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 // CRandomChattingDlg 메시지 처리기
@@ -148,9 +153,6 @@ HCURSOR CRandomChattingDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-#include "DialogCommunicationExample1.h"
-#include "DialogCommunicationExample2.h"
-
 void CRandomChattingDlg::OnBnClickedButton1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -167,4 +169,11 @@ void CRandomChattingDlg::OnBnClickedButton1()
 
 	Dialog1->Dialog2 = Dialog2;
 	Dialog2->Dialog1 = Dialog1;
+}
+
+void CRandomChattingDlg::OnBnClickedButton2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	MainDialog* mainDialog = new MainDialog();
+	mainDialog->DoModal();
 }

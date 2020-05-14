@@ -39,6 +39,15 @@
     <ClInclude Include="DialogCommunicationExample2.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MainDialog.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatDialog.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="InvitationDialog.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RandomChatting.cpp">
@@ -54,6 +63,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="DialogCommunicationExample2.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDialog.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatDialog.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="InvitationDialog.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

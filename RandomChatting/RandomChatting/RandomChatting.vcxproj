@@ -183,9 +183,12 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ChatDialog.h" />
     <ClInclude Include="DialogCommunicationExample1.h" />
     <ClInclude Include="DialogCommunicationExample2.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="InvitationDialog.h" />
+    <ClInclude Include="MainDialog.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RandomChatting.h" />
     <ClInclude Include="RandomChattingDlg.h" />
@@ -193,8 +196,11 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChatDialog.cpp" />
     <ClCompile Include="DialogCommunicationExample1.cpp" />
     <ClCompile Include="DialogCommunicationExample2.cpp" />
+    <ClCompile Include="InvitationDialog.cpp" />
+    <ClCompile Include="MainDialog.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
