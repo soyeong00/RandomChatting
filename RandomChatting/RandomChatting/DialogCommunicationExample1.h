@@ -25,4 +25,18 @@ public:
 
 public:
 	class DialogCommunicationExample2* Dialog2;
+
+public:
+	WSADATA wsaData;
+	SOCKET hSocket;
+	SOCKADDR_IN servAddr;
+
+	int OnBnClickedAcceptButton();
+	int OnBnClickedInviteButton();
+
+public:
+	SOCKADDR_IN ClientAddr;
+	SOCKET		ClientSocket;
+
+	afx_msg void OnBnClickedButton2();
 };

@@ -21,7 +21,16 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CEdit m_edit;
+//	CEdit m_edit;
 
 	class DialogCommunicationExample1* Dialog1;
+	CEdit ChattingBoard;
+	CEdit ChattingView;
+//	afx_msg void OnBnClickedButton2();
+//	afx_msg void OnBnClickedButton1();
+
+
+	afx_msg void OnBnClickedSendButton();
+	afx_msg void OnBnClickedCloseButton();
+	//void ConsistentText();
 };
