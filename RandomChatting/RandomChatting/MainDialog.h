@@ -2,6 +2,8 @@
 
 // MainDialog 대화 상자
 
+#define MESSAGE_RANDOM_CHAT WM_USER
+
 class MainDialog : public CDialogEx
 {
 	DECLARE_DYNAMIC(MainDialog)
@@ -19,4 +21,13 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButton2();
+
+public:
+	CWinThread* m_Thread;
+	bool m_IsWorkingThread;
+	int m_Count;
+	LRESULT UpdateCount(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

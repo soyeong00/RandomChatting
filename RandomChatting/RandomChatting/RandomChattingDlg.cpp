@@ -33,6 +33,8 @@ protected:
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	//	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -45,6 +47,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	//	ON_WM_CHAR()
 END_MESSAGE_MAP()
 
 // CRandomChattingDlg 대화 상자
@@ -177,3 +180,10 @@ void CRandomChattingDlg::OnBnClickedButton2()
 	MainDialog* mainDialog = new MainDialog();
 	mainDialog->DoModal();
 }
+
+//void CAboutDlg::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+//{
+//	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+//
+//	CDialogEx::OnChar(nChar, nRepCnt, nFlags);
+//}
