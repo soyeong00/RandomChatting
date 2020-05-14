@@ -7,6 +7,10 @@
 #include "RandomChattingDlg.h"
 #include "afxdialogex.h"
 
+#include "DialogCommunicationExample1.h"
+#include "DialogCommunicationExample2.h"
+#include "MainDialog.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -29,6 +33,8 @@ protected:
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	//	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -41,12 +47,14 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	//	ON_WM_CHAR()
 END_MESSAGE_MAP()
 
 // CRandomChattingDlg 대화 상자
 
 CRandomChattingDlg::CRandomChattingDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_RANDOMCHATTING_DIALOG, pParent)
+	, mName(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -54,6 +62,8 @@ CRandomChattingDlg::CRandomChattingDlg(CWnd* pParent /*=nullptr*/)
 void CRandomChattingDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT1, mName);
+	DDX_Control(pDX, IDC_EDIT1, mcName);
 }
 
 BEGIN_MESSAGE_MAP(CRandomChattingDlg, CDialogEx)
@@ -61,6 +71,8 @@ BEGIN_MESSAGE_MAP(CRandomChattingDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CRandomChattingDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CRandomChattingDlg::OnBnClickedButton2)
+	ON_EN_CHANGE(IDC_EDIT1, &CRandomChattingDlg::OnEnChangeEdit1)
 END_MESSAGE_MAP()
 
 // CRandomChattingDlg 메시지 처리기
@@ -148,9 +160,6 @@ HCURSOR CRandomChattingDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-#include "DialogCommunicationExample1.h"
-#include "DialogCommunicationExample2.h"
-
 void CRandomChattingDlg::OnBnClickedButton1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -167,4 +176,29 @@ void CRandomChattingDlg::OnBnClickedButton1()
 
 	Dialog1->Dialog2 = Dialog2;
 	Dialog2->Dialog1 = Dialog1;
+}
+
+void CRandomChattingDlg::OnBnClickedButton2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	//dlg_t->SetDlgItemText(IDC_Static_Timer, _T("요기에 써주세요~"));
+
+	MainDialog* mainDialog = new MainDialog();
+
+	CString str;
+	mcName.GetWindowTextW(str); // "요기에 써주세요~";
+	mainDialog->SetName(&str);
+
+	mainDialog->DoModal();
+}
+
+void CRandomChattingDlg::OnEnChangeEdit1()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

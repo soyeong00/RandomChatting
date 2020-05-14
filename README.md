@@ -47,3 +47,10 @@ SW_SHOWNORMAL	- 윈도우를 보이며 활성화한다. 만약 윈도우가 최�
 
 
 출처: https://3dmpengines.tistory.com/544 [3DMP]
+
+
+TCP/IP 관련
+CAsyncSocket
+ - https://jay-ji.tistory.com/26
+ - https://ecohands.tistory.com/438
+ - https://zadd.tistory.com/31
