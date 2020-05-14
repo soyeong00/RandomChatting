@@ -182,15 +182,13 @@ void CRandomChattingDlg::OnBnClickedButton2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-
 	//dlg_t->SetDlgItemText(IDC_Static_Timer, _T("요기에 써주세요~"));
 
 	MainDialog* mainDialog = new MainDialog();
 
 	CString str;
-	mcName.GetWindowTextW(str);
-	mainDialog->mGuest = str;// "요기에 써주세요~";
-
+	mcName.GetWindowTextW(str); // "요기에 써주세요~";
+	mainDialog->SetName(&str);
 
 	mainDialog->DoModal();
 }
@@ -198,10 +196,9 @@ void CRandomChattingDlg::OnBnClickedButton2()
 void CRandomChattingDlg::OnEnChangeEdit1()
 {
 	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
+	// CDialogEx::OnInitDialog() 함수를 재지정
 	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
 	// 이 알림 메시지를 보내지 않습니다.
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 }

@@ -192,6 +192,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="RandomChatting.h" />
     <ClInclude Include="RandomChattingDlg.h" />
+    <ClInclude Include="Request.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -209,6 +210,7 @@
     </ClCompile>
     <ClCompile Include="RandomChatting.cpp" />
     <ClCompile Include="RandomChattingDlg.cpp" />
+    <ClCompile Include="Request.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RandomChatting.rc" />

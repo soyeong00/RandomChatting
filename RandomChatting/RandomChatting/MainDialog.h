@@ -28,5 +28,10 @@ public:
 	bool m_IsWorkingThread;
 	CString ip;
 	LRESULT UpdateIp(WPARAM wParam, LPARAM lParam);
+
+	CString* mName;
+	void SetName(CString* str);
+
+private:
 	CString mGuest;
 };

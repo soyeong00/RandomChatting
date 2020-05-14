@@ -37,7 +37,7 @@ UINT ThreadForWaiting(LPVOID param)
 	WSADATA data;
 	WORD version = MAKEWORD(2, 2);
 	int wsOk = WSAStartup(version, &data);
-	if (wsOk != 0)
+	if(wsOk != 0)
 	{
 		return 0;
 	}
@@ -46,23 +46,23 @@ UINT ThreadForWaiting(LPVOID param)
 	serverHint.sin_addr.S_un.S_addr = ADDR_ANY; // Us any IP address available on the machine
 	serverHint.sin_family = AF_INET; // Address format is IPv4
 	serverHint.sin_port = htons(54000); // Convert from little to big endian
-	if (bind(in, (sockaddr*)&serverHint, sizeof(serverHint)) == SOCKET_ERROR)
+	if(bind(in, (sockaddr*) &serverHint, sizeof(serverHint)) == SOCKET_ERROR)
 	{
 		return 0;
 	}
 	sockaddr_in client; // Use to hold the client information (port / ip address)
 	int clientLength = sizeof(client); // The size of the client information
 	char buf[1024];
-	MainDialog* main = (MainDialog*)param;
+	MainDialog* main = (MainDialog*) param;
 	//while (main->m_IsWorkingThread)
 	//{
 	ZeroMemory(&client, clientLength); // Clear the client structure
 	ZeroMemory(buf, 1024); // Clear the receive buffer
 
 	// Wait for message
-	int bytesIn = recvfrom(in, buf, 1024, 0, (sockaddr*)&client, &clientLength);
+	int bytesIn = recvfrom(in, buf, 1024, 0, (sockaddr*) &client, &clientLength);
 
-	if (bytesIn == SOCKET_ERROR)
+	if(bytesIn == SOCKET_ERROR)
 	{
 	}
 	// Display message and client info
@@ -83,7 +83,7 @@ void MainDialog::OnBnClickedButton2()
 	CString caption;
 	GetDlgItemText(IDC_BUTTON2, caption);
 
-	if (caption == _T("검색 시작"))
+	if(caption == _T("검색 시작"))
 	{
 		m_IsWorkingThread = true;
 
@@ -106,4 +106,14 @@ LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 	//CString text = (CString)"Got an Invite";
 	SetDlgItemText(IDC_STATIC_COUNT, this->ip);
 	return 0;
+}
+
+void MainDialog::SetName(CString* str)
+{
+	mName = str;
+
+	CString newString = *str;
+	newString.Append(CString(" 님"));
+
+	mGuest = newString;
 }
