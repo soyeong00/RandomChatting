@@ -24,11 +24,7 @@ public:
 #endif
 
 protected:
-<<<<<<< HEAD
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다...
-=======
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
->>>>>>> parent of 4cfe949... 정준상
 
 // 구현입니다.
 protected:
