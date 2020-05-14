@@ -5,6 +5,7 @@
 #include "MainDialog.h"
 #include "afxdialogex.h"
 #include <WS2tcpip.h>
+#include "Request.h"
 #pragma comment(lib, "ws2_32.lib")
 
 // MainDialog 대화 상자
@@ -26,11 +27,13 @@ void MainDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_STATIC_GUEST, mGuest);
+	DDX_Control(pDX, IDC_EDIT1, m_edit);
 }
 
 BEGIN_MESSAGE_MAP(MainDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &MainDialog::OnBnClickedButton2)
 	ON_MESSAGE(MESSAGE_RANDOM_CHAT, &MainDialog::UpdateIp)
+	ON_BN_CLICKED(IDC_BUTTON1, &MainDialog::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 UINT ThreadForWaiting(LPVOID param)
@@ -131,5 +134,26 @@ void MainDialog::ReceiveRequest()
 		// 들어가는 내용 변경
 		invDialog->SetText(&ip);
 		invDialog->DoModal();
+	}
+}
+
+void MainDialog::OnBnClickedButton1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// 이름으로 UDP 메시지 보내기
+
+	Request* req = new Request();
+	CString* str;
+	m_edit.GetWindowText(*str);
+	CT2CA pszConvertedAnsiString(*str);
+	std::string s(pszConvertedAnsiString);
+
+	if(s.empty())
+	{
+		req->SendRequestToAnyone();
+	}
+	else
+	{
+		req->SendRequestByName(s);
 	}
 }
