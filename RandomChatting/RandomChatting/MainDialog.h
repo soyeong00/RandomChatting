@@ -30,4 +30,5 @@ public:
 	int m_Count;
 	LRESULT UpdateCount(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	CString mGuest;
 };

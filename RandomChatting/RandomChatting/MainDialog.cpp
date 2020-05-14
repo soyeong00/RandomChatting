@@ -12,6 +12,7 @@ IMPLEMENT_DYNAMIC(MainDialog, CDialogEx)
 
 MainDialog::MainDialog(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MainDialog, pParent)
+	, mGuest(_T(""))
 {
 	m_Count = 0;
 }
@@ -23,6 +24,7 @@ MainDialog::~MainDialog()
 void MainDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_STATIC_GUEST, mGuest);
 }
 
 BEGIN_MESSAGE_MAP(MainDialog, CDialogEx)
