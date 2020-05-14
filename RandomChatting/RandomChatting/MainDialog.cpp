@@ -1,10 +1,11 @@
 ﻿// MainDialog.cpp: 구현 파일
 //
-
 #include "pch.h"
 #include "RandomChatting.h"
 #include "MainDialog.h"
 #include "afxdialogex.h"
+#include <WS2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
 
 // MainDialog 대화 상자
 
@@ -14,7 +15,6 @@ MainDialog::MainDialog(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MainDialog, pParent)
 	, mGuest(_T(""))
 {
-	m_Count = 0;
 }
 
 MainDialog::~MainDialog()
@@ -29,37 +29,65 @@ void MainDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(MainDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &MainDialog::OnBnClickedButton2)
-	ON_WM_TIMER()
-	ON_MESSAGE(MESSAGE_RANDOM_CHAT, &MainDialog::UpdateCount)
+	ON_MESSAGE(MESSAGE_RANDOM_CHAT, &MainDialog::UpdateIp)
 END_MESSAGE_MAP()
 
-UINT ThreadForCounting(LPVOID param)
+UINT ThreadForWaiting(LPVOID param)
 {
-	MainDialog* main = (MainDialog*) param;
-
-	while(main->m_IsWorkingThread)
+	WSADATA data;
+	WORD version = MAKEWORD(2, 2);
+	int wsOk = WSAStartup(version, &data);
+	if (wsOk != 0)
 	{
-		Sleep(100);
-
-		PostMessage(main->m_hWnd, MESSAGE_RANDOM_CHAT, NULL, NULL);
+		return 0;
 	}
+	SOCKET in = socket(AF_INET, SOCK_DGRAM, 0);
+	sockaddr_in serverHint;
+	serverHint.sin_addr.S_un.S_addr = ADDR_ANY; // Us any IP address available on the machine
+	serverHint.sin_family = AF_INET; // Address format is IPv4
+	serverHint.sin_port = htons(54000); // Convert from little to big endian
+	if (bind(in, (sockaddr*)&serverHint, sizeof(serverHint)) == SOCKET_ERROR)
+	{
+		return 0;
+	}
+	sockaddr_in client; // Use to hold the client information (port / ip address)
+	int clientLength = sizeof(client); // The size of the client information
+	char buf[1024];
+	MainDialog* main = (MainDialog*)param;
+	//while (main->m_IsWorkingThread)
+	//{
+	ZeroMemory(&client, clientLength); // Clear the client structure
+	ZeroMemory(buf, 1024); // Clear the receive buffer
 
+	// Wait for message
+	int bytesIn = recvfrom(in, buf, 1024, 0, (sockaddr*)&client, &clientLength);
+
+	if (bytesIn == SOCKET_ERROR)
+	{
+	}
+	// Display message and client info
+	char clientIp[256]; // Create enough space to convert the address byte array
+	ZeroMemory(clientIp, 256); // to string of characters
+
+	// Convert from byte array to chars
+	inet_ntop(AF_INET, &client.sin_addr, clientIp, 256);
+	main->ip = clientIp;
+	PostMessage(main->m_hWnd, MESSAGE_RANDOM_CHAT, NULL, NULL);
+	//}
 	return 0;
 }
 
 // MainDialog 메시지 처리기
 void MainDialog::OnBnClickedButton2()
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//SetTimer(1, 1000/*freq*/, 0);
 	CString caption;
 	GetDlgItemText(IDC_BUTTON2, caption);
 
-	if(caption == _T("검색 시작"))
+	if (caption == _T("검색 시작"))
 	{
 		m_IsWorkingThread = true;
 
-		m_Thread = AfxBeginThread(ThreadForCounting, this);
+		m_Thread = AfxBeginThread(ThreadForWaiting, this);
 
 		SetDlgItemText(IDC_BUTTON2, _T("검색 중지"));
 	}
@@ -73,24 +101,9 @@ void MainDialog::OnBnClickedButton2()
 	}
 }
 
-LRESULT MainDialog::UpdateCount(WPARAM wParam, LPARAM lParam)
+LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 {
-	CString text;
-	text.Format(_T("%d"), m_Count++);
-
-	SetDlgItemText(IDC_STATIC_COUNT, text);
-
+	//CString text = (CString)"Got an Invite";
+	SetDlgItemText(IDC_STATIC_COUNT, this->ip);
 	return 0;
-}
-
-void MainDialog::OnTimer(UINT_PTR nIDEvent)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-	CDialogEx::OnTimer(nIDEvent);
-
-	/*if(1)
-	{
-		KillTimer(1);
-	}*/
 }
