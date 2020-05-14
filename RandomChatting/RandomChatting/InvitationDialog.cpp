@@ -5,6 +5,7 @@
 #include "RandomChatting.h"
 #include "InvitationDialog.h"
 #include "afxdialogex.h"
+#include "ChatDialog.h"
 
 // InvitationDialog 대화 상자
 
@@ -37,6 +38,10 @@ END_MESSAGE_MAP()
 void InvitationDialog::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	ChatDialog* chat = new ChatDialog();
+
+	chat->DoModal();
+
 	CDialogEx::OnOK();
 }
 
@@ -48,6 +53,10 @@ void InvitationDialog::OnBnClickedCancel()
 
 void InvitationDialog::SetText(CString* Name)
 {
+	// 상대방 이름 값 저장
+	yourName = Name;
+
+	// 메시지 텍스트 값 설정
 	CString* str = Name;
 	str->Append(*text);
 	m_text = *str;

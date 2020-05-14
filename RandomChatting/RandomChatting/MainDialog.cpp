@@ -124,14 +124,19 @@ void MainDialog::SetName(CString* str)
 
 void MainDialog::ReceiveRequest()
 {
+	// 초대 다이얼로그 생성
 	if(invDialog == nullptr)
 	{
 		invDialog = new InvitationDialog();
 	}
 
+	// 초대 다이얼로그 생성 된 경우
 	if(invDialog != nullptr)
 	{
-		// 들어가는 내용 변경
+		// 내 이름 값 전달
+		invDialog->myName = mName;
+
+		// 이름을 받아서 출력될 메시지 내용 변경
 		invDialog->SetText(&ip);
 		invDialog->DoModal();
 	}
@@ -140,14 +145,16 @@ void MainDialog::ReceiveRequest()
 void MainDialog::OnBnClickedButton1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	// 이름으로 UDP 메시지 보내기
 
+	// UDP 메시지 보내기
 	Request* req = new Request();
 	CString* str;
 	m_edit.GetWindowText(*str);
 	CT2CA pszConvertedAnsiString(*str);
 	std::string s(pszConvertedAnsiString);
 
+	// 입력 텍스트가 없으면 SendRequestToAnyone 실행
+	// 입력 텍스트가 있으면 SendRequestByName 실행
 	if(s.empty())
 	{
 		req->SendRequestToAnyone();

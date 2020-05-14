@@ -28,4 +28,7 @@ public:
 	void SetText(CString* Name);
 	//	CStatic m_static;
 	CString m_text;
+
+	CString* myName;
+	CString* yourName;
 };

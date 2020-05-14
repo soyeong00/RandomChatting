@@ -39,4 +39,7 @@ public:
 
 private:
 	CString mGuest;
+public:
+	afx_msg void OnBnClickedButton1();
+	CEdit m_edit;
 };
