@@ -22,4 +22,10 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
+
+public:
+	CString* text = new CString(" 님 께 초대받았습니다. 수락하시겠습니까?");
+	void SetText(CString* Name);
+	//	CStatic m_static;
+	CString m_text;
 };

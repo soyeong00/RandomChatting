@@ -14,6 +14,7 @@ IMPLEMENT_DYNAMIC(MainDialog, CDialogEx)
 MainDialog::MainDialog(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MainDialog, pParent)
 	, mGuest(_T(""))
+	, invDialog(nullptr)
 {
 }
 
@@ -116,4 +117,19 @@ void MainDialog::SetName(CString* str)
 	newString.Append(CString(" 님"));
 
 	mGuest = newString;
+}
+
+void MainDialog::ReceiveRequest()
+{
+	if(invDialog == nullptr)
+	{
+		invDialog = new InvitationDialog();
+	}
+
+	if(invDialog != nullptr)
+	{
+		// 들어가는 내용 변경
+		invDialog->SetText(&ip);
+		invDialog->DoModal();
+	}
 }

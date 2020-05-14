@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 // MainDialog 대화 상자
+#include "InvitationDialog.h"
 
 #define MESSAGE_RANDOM_CHAT WM_USER
 
@@ -31,6 +32,10 @@ public:
 
 	CString* mName;
 	void SetName(CString* str);
+
+	void ReceiveRequest();
+
+	class InvitationDialog* invDialog;
 
 private:
 	CString mGuest;

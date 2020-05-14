@@ -12,6 +12,7 @@ IMPLEMENT_DYNAMIC(InvitationDialog, CDialogEx)
 
 InvitationDialog::InvitationDialog(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_InvitationDialog, pParent)
+	, m_text(_T(""))
 {
 }
 
@@ -22,6 +23,8 @@ InvitationDialog::~InvitationDialog()
 void InvitationDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	//  DDX_Control(pDX, IDC_STATIC_INV, m_static);
+	DDX_Text(pDX, IDC_STATIC_INV, m_text);
 }
 
 BEGIN_MESSAGE_MAP(InvitationDialog, CDialogEx)
@@ -34,11 +37,18 @@ END_MESSAGE_MAP()
 void InvitationDialog::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//CDialogEx::OnOK();
+	CDialogEx::OnOK();
 }
 
 void InvitationDialog::OnBnClickedCancel()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//CDialogEx::OnCancel();
+	CDialogEx::OnCancel();
+}
+
+void InvitationDialog::SetText(CString* Name)
+{
+	CString* str = Name;
+	str->Append(*text);
+	m_text = *str;
 }
