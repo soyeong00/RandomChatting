@@ -3,6 +3,8 @@
 // ChatDialog 대화 상자
 #include "Request.h"
 
+#define MESSAGE_CHAT_RECEIVED 8405
+
 class ChatDialog : public CDialogEx
 {
 	DECLARE_DYNAMIC(ChatDialog)
@@ -22,14 +24,25 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString* myName;
-	CString* yourName;
+	/////////////종은추가코드/////////////////////
+	CString chattingIP;
+	bool m_IsChatting;
+
+
+
+	///////////////종은추가코드////////////////////
+	CString myName;
+	CString yourName;
+	
 	afx_msg void OnBnClickedButton2();
 
 	CEdit m_edit;
 	CEdit m_input;
-
+	CString ip;
+	CString receivedChat;
 	Request* req;
+	class MainDialog* main;
+	LRESULT UpdateChat(WPARAM wParam, LPARAM lParam);
 	virtual BOOL OnInitDialog();
 
 	void SendMsg();

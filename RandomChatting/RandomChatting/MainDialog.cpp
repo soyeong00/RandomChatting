@@ -11,6 +11,7 @@
 #include <atlconv.h>
 #pragma comment(lib, "ws2_32.lib")
 
+
 // MainDialog 대화 상자
 
 IMPLEMENT_DYNAMIC(MainDialog, CDialogEx)
@@ -149,6 +150,7 @@ LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 //LRESULT MainDialog::
+
 
 void MainDialog::SetName(CString* str)
 {

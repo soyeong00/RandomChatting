@@ -41,7 +41,9 @@ void InvitationDialog::OnBnClickedOk()
 	//
 	ChatDialog* chat = new ChatDialog();
 	chat->DoModal();
-
+	chat->main = this->main;
+	chat->myName = *(this->main->mName);
+	chat->yourName = this->main->invitingName;
 	CDialogEx::OnOK();
 }
 

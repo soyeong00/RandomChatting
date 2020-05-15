@@ -5,13 +5,16 @@
 #include "RandomChatting.h"
 #include "ChatDialog.h"
 #include "afxdialogex.h"
+#include <sstream>
+#include <WS2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
 
 // ChatDialog 대화 상자
 
 IMPLEMENT_DYNAMIC(ChatDialog, CDialogEx)
 
 ChatDialog::ChatDialog(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_ChatDialog, pParent), myName(nullptr), yourName(nullptr)
+	: CDialogEx(IDD_ChatDialog, pParent)//, myName(nullptr), yourName(nullptr)
 {
 }
 
@@ -27,6 +30,7 @@ void ChatDialog::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(ChatDialog, CDialogEx)
+	ON_MESSAGE(MESSAGE_CHAT_RECEIVED, &ChatDialog::UpdateChat)
 	ON_BN_CLICKED(IDC_BUTTON2, &ChatDialog::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
@@ -36,6 +40,12 @@ void ChatDialog::OnBnClickedButton2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	SendMsg();
+}
+
+LRESULT ChatDialog::UpdateChat(WPARAM wParam, LPARAM lParam)
+{
+	ReceiveMsg();
+	return 0;
 }
 
 BOOL ChatDialog::OnInitDialog()
@@ -73,11 +83,64 @@ void ChatDialog::ReceiveMsg()
 	CString* strEdit = new CString();
 	m_edit.GetWindowText(*strEdit);
 
-	CString* strReceive = new CString();
-	//
+	CString* strReceive = &this->receivedChat;
 
 	strEdit->Append(L"\r\n");
 	//strEdit->Append(*yourName);
 	strEdit->Append(*strEdit);
 	m_edit.SetWindowText(*strEdit);
 }
+
+UINT ThreadForWaitingMessage(LPVOID param)
+{
+	WSADATA data;
+	WORD version = MAKEWORD(2, 2);
+	int wsOk = WSAStartup(version, &data);
+	if (wsOk != 0)
+	{
+		return 0;
+	}
+	SOCKET in = socket(AF_INET, SOCK_DGRAM, 0);
+	sockaddr_in serverHint;
+	serverHint.sin_addr.S_un.S_addr = ADDR_ANY; // Us any IP address available on the machine
+	serverHint.sin_family = AF_INET; // Address format is IPv4
+	serverHint.sin_port = htons(54000); // Convert from little to big endian
+	if (bind(in, (sockaddr*)&serverHint, sizeof(serverHint)) == SOCKET_ERROR)
+	{
+		return 0;
+	}
+	sockaddr_in client; // Use to hold the client information (port / ip address)
+	int clientLength = sizeof(client); // The size of the client information
+	char buf[1024];
+	ChatDialog* chat = (ChatDialog*)param;
+	while (chat->m_IsChatting)
+	{
+		ZeroMemory(&client, clientLength); // Clear the client structure
+		ZeroMemory(buf, 1024); // Clear the receive buffer
+
+		// Wait for message
+		int bytesIn = recvfrom(in, buf, 1024, 0, (sockaddr*)&client, &clientLength);
+
+		if (bytesIn == SOCKET_ERROR)
+		{
+		}
+		// Display message and client info
+		char clientIp[256]; // Create enough space to convert the address byte array
+		ZeroMemory(clientIp, 256); // to string of characters
+		//=============종은추가코드============//
+		string sBuf = string(buf);
+		stringstream ssBuf(sBuf);
+		// Convert from byte array to chars
+		inet_ntop(AF_INET, &client.sin_addr, clientIp, 256);
+		//받아온 ip가 chattingIP인지 확인
+		if (chat->chattingIP.Compare((CString)clientIp) == 0)
+			chat->receivedChat = buf;
+			PostMessage(chat->m_hWnd, MESSAGE_CHAT_RECEIVED, NULL, NULL);
+	}
+	//소켓을 닫는다
+	closesocket(in);
+	//close down Winsock
+	WSACleanup();
+	return 0;
+}
+
