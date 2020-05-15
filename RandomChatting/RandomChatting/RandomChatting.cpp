@@ -1,23 +1,21 @@
-﻿
-// RandomChatting.cpp: 애플리케이션에 대한 클래스 동작을 정의합니다.
+﻿// RandomChatting.cpp: 애플리케이션에 대한 클래스 동작을 정의합니다.
 //
 
 #include "pch.h"
 #include "framework.h"
 #include "RandomChatting.h"
 #include "RandomChattingDlg.h"
+#include <afxsock.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 // CRandomChattingApp
 
 BEGIN_MESSAGE_MAP(CRandomChattingApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
-
 
 // CRandomChattingApp 생성
 
@@ -30,11 +28,9 @@ CRandomChattingApp::CRandomChattingApp()
 	// InitInstance에 모든 중요한 초기화 작업을 배치합니다.
 }
 
-
 // 유일한 CRandomChattingApp 개체입니다.
 
 CRandomChattingApp theApp;
-
 
 // CRandomChattingApp 초기화
 
@@ -52,12 +48,17 @@ BOOL CRandomChattingApp::InitInstance()
 
 	CWinApp::InitInstance();
 
+	if(!AfxSocketInit())
+	{
+		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
+		return FALSE;
+	}
 
 	AfxEnableControlContainer();
 
 	// 대화 상자에 셸 트리 뷰 또는
 	// 셸 목록 뷰 컨트롤이 포함되어 있는 경우 셸 관리자를 만듭니다.
-	CShellManager *pShellManager = new CShellManager;
+	CShellManager* pShellManager = new CShellManager;
 
 	// MFC 컨트롤의 테마를 사용하기 위해 "Windows 원형" 비주얼 관리자 활성화
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
@@ -74,24 +75,24 @@ BOOL CRandomChattingApp::InitInstance()
 	CRandomChattingDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
-	if (nResponse == IDOK)
+	if(nResponse == IDOK)
 	{
 		// TODO: 여기에 [확인]을 클릭하여 대화 상자가 없어질 때 처리할
 		//  코드를 배치합니다.
 	}
-	else if (nResponse == IDCANCEL)
+	else if(nResponse == IDCANCEL)
 	{
 		// TODO: 여기에 [취소]를 클릭하여 대화 상자가 없어질 때 처리할
 		//  코드를 배치합니다.
 	}
-	else if (nResponse == -1)
+	else if(nResponse == -1)
 	{
 		TRACE(traceAppMsg, 0, "경고: 대화 상자를 만들지 못했으므로 애플리케이션이 예기치 않게 종료됩니다.\n");
 		TRACE(traceAppMsg, 0, "경고: 대화 상자에서 MFC 컨트롤을 사용하는 경우 #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS를 수행할 수 없습니다.\n");
 	}
 
 	// 위에서 만든 셸 관리자를 삭제합니다.
-	if (pShellManager != nullptr)
+	if(pShellManager != nullptr)
 	{
 		delete pShellManager;
 	}
@@ -104,4 +105,3 @@ BOOL CRandomChattingApp::InitInstance()
 	// 반환합니다.
 	return FALSE;
 }
-
