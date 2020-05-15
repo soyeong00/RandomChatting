@@ -29,7 +29,7 @@ public:
 	/////////////종은추가코드/////////////////////
 	CString chattingIP;
 	bool m_IsChatting;
-
+	CWinThread* m_Thread;
 
 
 	///////////////종은추가코드////////////////////
