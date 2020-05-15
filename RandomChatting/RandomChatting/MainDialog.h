@@ -36,7 +36,7 @@ public:
 	bool m_IsChatting;
 	//CString chattingIP;
 	//LRESULT UpdateChat(WPARAM wParam, LPARAM lParam);
-	
+
 	//=============종은추가코드============//
 	void SetName(CString* str);
 	void runThread();
@@ -50,4 +50,6 @@ public:
 	CEdit m_edit;
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnBnClickedButton3();
+
+	void goToChat();
 };

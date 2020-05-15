@@ -12,7 +12,6 @@
 #include "ChatDialog.h"
 #pragma comment(lib, "ws2_32.lib")
 
-
 // MainDialog 대화 상자
 
 IMPLEMENT_DYNAMIC(MainDialog, CDialogEx)
@@ -131,12 +130,12 @@ void MainDialog::OnBnClickedButton2()
 
 LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 {
-	if (this->invitingName.Compare((CString)"+") == 0) {
-		ChatDialog* chat = new ChatDialog();
-		chat->DoModal();
-		chat->main = this;
-		chat->myName = *(this->mName);
-		chat->yourName = *(this->invitingName);
+	if(this->invitingName.Compare((CString) "+") == 0)
+	{
+		WaitForSingleObject(m_Thread->m_hThread, 0);
+		ReceiveRequest();
+		SetDlgItemText(IDC_STATIC_COUNT, (CString) "CorrectInvite");
+		goToChat();
 	}
 	else if(this->wantingName.CompareNoCase((CString) "") == 0 && this->invitingName.CompareNoCase((LPCTSTR) (*(this->mName))) != 0)
 	{
@@ -161,7 +160,6 @@ LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 //LRESULT MainDialog::
-
 
 void MainDialog::SetName(CString* str)
 {
@@ -224,18 +222,27 @@ void MainDialog::OnBnClickedButton1()
 	{
 		req->SendRequestByName(inviter, s);
 	}
+
+	runThread();
 }
 void MainDialog::OnBnClickedButton4()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	ChatDialog* chat = new ChatDialog(this, this);
-	chat->main = this;
-	chat->DoModal();
+	goToChat();
 }
 
 void MainDialog::OnBnClickedButton3()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	PostQuitMessage(0);
+}
+
+void MainDialog::goToChat()
+{
+	ChatDialog* chat = new ChatDialog(this, this);
+	chat->main = this;
+	chat->myName = *(this->mName);
+	chat->yourName = *(this->invitingName);
+	chat->DoModal();
 }
