@@ -12,7 +12,7 @@ Request::~Request()
 {
 }
 
-void Request::SendRequestToAnyone()
+void Request::SendRequestToAnyone(string inviter)
 {
 	WSADATA data; //WSAStartup()을 시작하기 위해 필요한 파일
 	WORD version = MAKEWORD(2, 2); //WSAStartup에 version이 있어야 시작할수 있음
@@ -31,7 +31,7 @@ void Request::SendRequestToAnyone()
 	//Socket만들기 :Socket의 형은 datagram
 	SOCKET out = socket(AF_INET, SOCK_DGRAM, 0);
 	//Socket에 string보내는 법 -> 그러면 기다리는 애한테 날라감
-	string s = "";
+	string s = inviter;
 	int sendOk = sendto(out, s.c_str(), s.size() + 1, 0, (sockaddr*) &server, sizeof(server));
 	if(sendOk == SOCKET_ERROR)
 	{
@@ -42,7 +42,7 @@ void Request::SendRequestToAnyone()
 	WSACleanup();
 }
 
-void Request::SendRequestByName(string name)
+void Request::SendRequestByName(string inviter,string receiver)
 {
 	WSADATA data; //WSAStartup()을 시작하기 위해 필요한 파일
 	WORD version = MAKEWORD(2, 2); //WSAStartup에 version이 있어야 시작할수 있음
@@ -61,7 +61,7 @@ void Request::SendRequestByName(string name)
 	//Socket만들기 :Socket의 형은 datagram
 	SOCKET out = socket(AF_INET, SOCK_DGRAM, 0);
 	//Socket에 string보내는 법 -> 그러면 기다리는 애한테 날라감
-	string s = name;
+	string s = inviter + " " + receiver;
 	int sendOk = sendto(out, s.c_str(), s.size() + 1, 0, (sockaddr*) &server, sizeof(server));
 	if(sendOk == SOCKET_ERROR)
 	{

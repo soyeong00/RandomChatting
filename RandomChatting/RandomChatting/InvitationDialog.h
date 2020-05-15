@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "MainDialog.h";
 // InvitationDialog 대화 상자
 
 class InvitationDialog : public CDialogEx
@@ -28,7 +28,7 @@ public:
 	void SetText(CString* Name);
 	//	CStatic m_static;
 	CString m_text;
-
 	CString* myName;
 	CString* yourName;
+	class MainDialog* main;
 };

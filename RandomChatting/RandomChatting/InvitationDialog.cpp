@@ -41,12 +41,13 @@ void InvitationDialog::OnBnClickedOk()
 	ChatDialog* chat = new ChatDialog();
 
 	chat->DoModal();
-
+	
 	CDialogEx::OnOK();
 }
 
 void InvitationDialog::OnBnClickedCancel()
 {
+	this->main->runThread();
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CDialogEx::OnCancel();
 }

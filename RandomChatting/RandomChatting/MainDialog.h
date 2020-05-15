@@ -29,10 +29,13 @@ public:
 	bool m_IsWorkingThread;
 	CString ip;
 	LRESULT UpdateIp(WPARAM wParam, LPARAM lParam);
-
 	CString* mName;
+	//=============종은추가코드============//
+	CString invitingName;
+	CString wantingName;
+	//=============종은추가코드============//
 	void SetName(CString* str);
-
+	void runThread();
 	void ReceiveRequest();
 
 	class InvitationDialog* invDialog;

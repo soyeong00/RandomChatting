@@ -6,6 +6,9 @@
 #include "afxdialogex.h"
 #include <WS2tcpip.h>
 #include "Request.h"
+#include <sstream>
+#include <string>
+#include <atlconv.h>
 #pragma comment(lib, "ws2_32.lib")
 
 // MainDialog 대화 상자
@@ -72,12 +75,30 @@ UINT ThreadForWaiting(LPVOID param)
 	// Display message and client info
 	char clientIp[256]; // Create enough space to convert the address byte array
 	ZeroMemory(clientIp, 256); // to string of characters
+	//=============종은추가코드============//
+	string sBuf = string(buf);
+	string inviter; //초대한 사람 이름
+	string wanting; // 채팅하고싶은사람
+	stringstream ssBuf(sBuf);
+	ssBuf >> inviter >> wanting;
+	main->invitingName = inviter.c_str();
+	main->wantingName = wanting.c_str();
+	/*if (wanting.compare("") == 0) 
+		postmessage(main->m_hwnd, message_random_chat, null, null);
+	else if(wanting.compare(ct2ca(*main->mname)) == 0)
+		postmessage(main->m_hwnd, message_random_chat, null, null);*/
 
+		
+	//=============종은추가코드============//
 	// Convert from byte array to chars
 	inet_ntop(AF_INET, &client.sin_addr, clientIp, 256);
 	main->ip = clientIp;
 	PostMessage(main->m_hWnd, MESSAGE_RANDOM_CHAT, NULL, NULL);
 	//}
+	//소켓을 닫는다
+	closesocket(in);
+	//close down Winsock
+	WSACleanup();
 	return 0;
 }
 
@@ -89,7 +110,7 @@ void MainDialog::OnBnClickedButton2()
 
 	if(caption == _T("검색 시작"))
 	{
-		m_IsWorkingThread = true;
+		//m_IsWorkingThread = true;
 
 		m_Thread = AfxBeginThread(ThreadForWaiting, this);
 
@@ -97,9 +118,9 @@ void MainDialog::OnBnClickedButton2()
 	}
 	else
 	{
-		m_IsWorkingThread = false;
+		//m_IsWorkingThread = false;
 
-		WaitForSingleObject(m_Thread->m_hThread, 5000);
+		WaitForSingleObject(m_Thread->m_hThread,0);
 
 		SetDlgItemText(IDC_BUTTON2, _T("검색 시작"));
 	}
@@ -107,10 +128,22 @@ void MainDialog::OnBnClickedButton2()
 
 LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 {
-	//CString text = (CString)"Got an Invite";
-	SetDlgItemText(IDC_STATIC_COUNT, this->ip);
+	if (this->wantingName.CompareNoCase((LPCTSTR)"") == 0 || (this->wantingName.CompareNoCase((LPCTSTR) (* (this->mName))))==0) {
+		WaitForSingleObject(m_Thread->m_hThread, 0);
+		ReceiveRequest();
+		SetDlgItemText(IDC_STATIC_COUNT, (CString)"CorrectInvite");
+	}
+	else
+	{
+		WaitForSingleObject(m_Thread->m_hThread, 0);
+		m_Thread = AfxBeginThread(ThreadForWaiting, this);
+		SetDlgItemText(IDC_STATIC_COUNT, (CString)"NotYourInvite");
+	}
+		
+	//SetDlgItemText(IDC_STATIC_COUNT, this->ip);
 	return 0;
 }
+//LRESULT MainDialog::
 
 void MainDialog::SetName(CString* str)
 {
@@ -122,9 +155,15 @@ void MainDialog::SetName(CString* str)
 	mGuest = newString;
 }
 
+void MainDialog::runThread()
+{
+	m_Thread = AfxBeginThread(ThreadForWaiting, this);
+}
+
 void MainDialog::ReceiveRequest()
 {
 	// 초대 다이얼로그 생성
+	
 	if(invDialog == nullptr)
 	{
 		invDialog = new InvitationDialog();
@@ -132,12 +171,14 @@ void MainDialog::ReceiveRequest()
 
 	// 초대 다이얼로그 생성 된 경우
 	if(invDialog != nullptr)
-	{
+	{	
+		delete invDialog;
+		invDialog = new InvitationDialog();
 		// 내 이름 값 전달
 		invDialog->myName = mName;
-
+		invDialog->main = this;
 		// 이름을 받아서 출력될 메시지 내용 변경
-		invDialog->SetText(&ip);
+		invDialog->SetText(&invitingName);
 		invDialog->DoModal();
 	}
 }
@@ -148,19 +189,21 @@ void MainDialog::OnBnClickedButton1()
 
 	// UDP 메시지 보내기
 	Request* req = new Request();
-	CString* str = new CString();
+	CString* str = &(CString)"";
 	m_edit.GetWindowText(*str);
 	CT2CA pszConvertedAnsiString(*str);
 	std::string s(pszConvertedAnsiString);
 
 	// 입력 텍스트가 없으면 SendRequestToAnyone 실행
 	// 입력 텍스트가 있으면 SendRequestByName 실행
+	CT2CA CInviter(this->invitingName);
+	std::string inviter(CInviter);
 	if(s.empty())
 	{
-		req->SendRequestToAnyone();
+		req->SendRequestToAnyone(inviter);
 	}
 	else
 	{
-		req->SendRequestByName(s);
+		req->SendRequestByName(inviter, s);
 	}
 }
