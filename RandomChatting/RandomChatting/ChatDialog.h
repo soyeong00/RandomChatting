@@ -2,6 +2,7 @@
 
 // ChatDialog 대화 상자
 #include "Request.h"
+#include "MainDialog.h"
 
 #define MESSAGE_CHAT_RECEIVED 8405
 
@@ -11,6 +12,7 @@ class ChatDialog : public CDialogEx
 
 public:
 	ChatDialog(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	ChatDialog(CWnd* pParent, MainDialog* main);
 	virtual ~ChatDialog();
 
 	// 대화 상자 데이터입니다.
@@ -47,4 +49,6 @@ public:
 
 	void SendMsg();
 	void ReceiveMsg();
+	void DisplayMessage(string name, string message);
+	afx_msg void OnBnClickedButton1();
 };
