@@ -131,7 +131,14 @@ void MainDialog::OnBnClickedButton2()
 
 LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 {
-	if(this->wantingName.CompareNoCase((CString) "") == 0 && this->invitingName.CompareNoCase((LPCTSTR) (*(this->mName))) != 0)
+	if (this->invitingName.Compare((CString)"+") == 0) {
+		ChatDialog* chat = new ChatDialog();
+		chat->DoModal();
+		chat->main = this;
+		chat->myName = *(this->mName);
+		chat->yourName = *(this->invitingName);
+	}
+	else if(this->wantingName.CompareNoCase((CString) "") == 0 && this->invitingName.CompareNoCase((LPCTSTR) (*(this->mName))) != 0)
 	{
 		WaitForSingleObject(m_Thread->m_hThread, 0);
 		ReceiveRequest();
