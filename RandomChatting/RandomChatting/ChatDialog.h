@@ -39,4 +39,5 @@ public:
 	void SendMsg();
 	void ReceiveMsg();
 	void DisplayMessage(string name, string message);
+	afx_msg void OnBnClickedButton1();
 };

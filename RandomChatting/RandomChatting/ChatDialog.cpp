@@ -34,6 +34,7 @@ void ChatDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(ChatDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &ChatDialog::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON1, &ChatDialog::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 // ChatDialog 메시지 처리기
@@ -117,4 +118,13 @@ void ChatDialog::ReceiveMsg()
 
 void ChatDialog::DisplayMessage(string name, string message)
 {
+}
+
+void ChatDialog::OnBnClickedButton1()
+{
+
+	OnDestroy();
+	OnOK();
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

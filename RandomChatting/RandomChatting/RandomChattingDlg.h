@@ -37,4 +37,5 @@ public:
 	afx_msg void OnEnChangeEdit1();
 	CString mName;
 	CEdit mcName;
+	afx_msg void OnBnClickedButton3();
 };
