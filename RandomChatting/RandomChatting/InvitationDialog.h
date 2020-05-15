@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "MainDialog.h";
+#include "MainDialog.h"
 // InvitationDialog 대화 상자
 
 class InvitationDialog : public CDialogEx

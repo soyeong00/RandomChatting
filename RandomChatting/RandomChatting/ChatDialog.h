@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 // ChatDialog 대화 상자
+#include "Request.h"
 
 class ChatDialog : public CDialogEx
 {
@@ -23,4 +24,14 @@ protected:
 public:
 	CString* myName;
 	CString* yourName;
+	afx_msg void OnBnClickedButton2();
+
+	CEdit m_edit;
+	CEdit m_input;
+
+	Request* req;
+	virtual BOOL OnInitDialog();
+
+	void SendMsg();
+	void ReceiveMsg();
 };

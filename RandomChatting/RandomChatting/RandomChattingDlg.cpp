@@ -10,6 +10,7 @@
 #include "DialogCommunicationExample1.h"
 #include "DialogCommunicationExample2.h"
 #include "MainDialog.h"
+#include "ChatDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -165,17 +166,9 @@ void CRandomChattingDlg::OnBnClickedButton1()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
 	// Dialog 2개를 생성 후 화면에 전시합니다
-	DialogCommunicationExample1* Dialog1 = new DialogCommunicationExample1();
-	DialogCommunicationExample2* Dialog2 = new DialogCommunicationExample2();
+	ChatDialog* Dialog1 = new ChatDialog();
 
-	Dialog1->Create(IDD_DialogCommunicationExample1);
-	Dialog1->ShowWindow(SW_SHOW);
-
-	Dialog2->Create(IDD_DialogCommunicationExample2);
-	Dialog2->ShowWindow(SW_SHOW);
-
-	Dialog1->Dialog2 = Dialog2;
-	Dialog2->Dialog1 = Dialog1;
+	Dialog1->DoModal();
 }
 
 void CRandomChattingDlg::OnBnClickedButton2()

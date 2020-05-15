@@ -18,6 +18,7 @@
 #define IDC_BUTTON2                     1002
 #define IDC_BUTTON3                     1003
 #define IDC_EDIT2                       1004
+#define IDC_INPUT                       1004
 #define IDC_STATIC_COUNT                1005
 #define IDC_STATIC_GUEST                1011
 #define IDC_STATIC_INV                  1012
