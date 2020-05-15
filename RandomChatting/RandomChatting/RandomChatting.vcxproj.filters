@@ -51,10 +51,10 @@
     <ClInclude Include="Request.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CClientSocket.h">
+    <ClInclude Include="CListenSocket.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CServerSocket.h">
+    <ClInclude Include="CClientSocket.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -86,10 +86,10 @@
     <ClCompile Include="Request.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CClientSocket.cpp">
+    <ClCompile Include="CListenSocket.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CServerSocket.cpp">
+    <ClCompile Include="CClientSocket.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -185,7 +185,7 @@
   <ItemGroup>
     <ClInclude Include="CClientSocket.h" />
     <ClInclude Include="ChatDialog.h" />
-    <ClInclude Include="CServerSocket.h" />
+    <ClInclude Include="CListenSocket.h" />
     <ClInclude Include="DialogCommunicationExample1.h" />
     <ClInclude Include="DialogCommunicationExample2.h" />
     <ClInclude Include="framework.h" />
@@ -201,7 +201,7 @@
   <ItemGroup>
     <ClCompile Include="CClientSocket.cpp" />
     <ClCompile Include="ChatDialog.cpp" />
-    <ClCompile Include="CServerSocket.cpp" />
+    <ClCompile Include="CListenSocket.cpp" />
     <ClCompile Include="DialogCommunicationExample1.cpp" />
     <ClCompile Include="DialogCommunicationExample2.cpp" />
     <ClCompile Include="InvitationDialog.cpp" />
