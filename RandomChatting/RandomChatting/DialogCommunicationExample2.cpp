@@ -23,13 +23,13 @@ void DialogCommunicationExample2::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	//  DDX_Control(pDX, IDC_EDIT1, m_edit);
-	DDX_Control(pDX, IDC_EDIT2, ChattingBoard);
-	DDX_Control(pDX, IDC_EDIT1, ChattingView);
+	//DDX_Control(pDX, IDC_EDIT2, ChattingBoard);
+	//DDX_Control(pDX, IDC_EDIT1, ChattingView);
 }
 
 BEGIN_MESSAGE_MAP(DialogCommunicationExample2, CDialogEx)
-	ON_BN_CLICKED(IDC_BUTTON1, &DialogCommunicationExample2::OnBnClickedSendButton)
-	ON_BN_CLICKED(IDCANCEL, &DialogCommunicationExample2::OnBnClickedCloseButton)
+	//ON_BN_CLICKED(IDC_BUTTON1, &DialogCommunicationExample2::OnBnClickedSendButton)
+	//ON_BN_CLICKED(IDCANCEL, &DialogCommunicationExample2::OnBnClickedCloseButton)
 END_MESSAGE_MAP()
 
 // DialogCommunicationExample2 메시지 처리기
@@ -38,14 +38,13 @@ void DialogCommunicationExample2::OnBnClickedSendButton()
 {
 	CString ChatBufUp;
 	CString ChatBufDown;
-	
+
 	ChattingBoard.GetWindowText(ChatBufDown);
 	ChattingView.GetWindowText(ChatBufUp);
-	
-	ChattingView.SetWindowText(ChatBufUp+"\r\n"+ChatBufDown);
-	ChattingBoard.SetWindowText((LPCTSTR)"");
-}
 
+	ChattingView.SetWindowText(ChatBufUp + "\r\n" + ChatBufDown);
+	ChattingBoard.SetWindowText((LPCTSTR) "");
+}
 
 void DialogCommunicationExample2::OnBnClickedCloseButton()
 {
@@ -53,4 +52,3 @@ void DialogCommunicationExample2::OnBnClickedCloseButton()
 	WSACleanup();
 	CDialogEx::OnCancel();
 }
-
