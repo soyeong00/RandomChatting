@@ -14,21 +14,15 @@
 #define IDR_MAINFRAME                   128
 #define IDC_BUTTON1                     1000
 #define IDC_EDIT1                       1001
-<<<<<<< HEAD
-#define IDC_EDIT2                       1002
-#define IDC_BUTTON2                     1003
-#define IDC_BUTTON3                     1004
-=======
 #define IDC_BUTTON2                     1002
 #define IDC_BUTTON3                     1003
 #define IDC_EDIT2                       1004
 #define IDC_STATIC_COUNT                1005
 #define IDC_STATIC_GUEST                1011
 #define IDC_STATIC_INV                  1012
->>>>>>> 95628c37ab55d039bee66811c1f852098ba72c9a
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        135

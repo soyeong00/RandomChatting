@@ -148,7 +148,7 @@ void MainDialog::OnBnClickedButton1()
 
 	// UDP 메시지 보내기
 	Request* req = new Request();
-	CString* str;
+	CString* str = new CString();
 	m_edit.GetWindowText(*str);
 	CT2CA pszConvertedAnsiString(*str);
 	std::string s(pszConvertedAnsiString);
