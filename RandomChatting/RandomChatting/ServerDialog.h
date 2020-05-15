@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-
 // ServerDialog 대화 상자
+#include "CListenSocket.h"
 
 class ServerDialog : public CDialogEx
 {
@@ -11,7 +11,7 @@ public:
 	ServerDialog(CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~ServerDialog();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ServerDialog };
 #endif
@@ -20,4 +20,9 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CListBox m_List;
+	ServerDialog(CWnd* pParent = NULL);
+	CListenSocket m_ListenSocket;
+	CListBox* clientList;
 };

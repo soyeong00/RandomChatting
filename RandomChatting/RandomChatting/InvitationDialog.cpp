@@ -41,7 +41,7 @@ void InvitationDialog::OnBnClickedOk()
 	ChatDialog* chat = new ChatDialog();
 
 	chat->DoModal();
-	
+
 	CDialogEx::OnOK();
 }
 
