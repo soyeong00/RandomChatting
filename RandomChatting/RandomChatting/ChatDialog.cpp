@@ -117,10 +117,12 @@ BOOL ChatDialog::OnInitDialog()
 
 	req = new Request();
 
-	//myName = &main->mName;
+
+
+	myName = *main->mName;
 	SetDlgItemText(IDC_STATIC_MYNAME, myName + " 님");
 
-	//yourName = &main->invitingName;
+	yourName = *main->invitingName;
 	SetDlgItemText(IDC_STATIC_YOURNAME, yourName);
 
 	m_IsChatting = true;
@@ -180,6 +182,8 @@ void ChatDialog::ReceiveMsg()
 	strEdit->Append(*strReceive);
 	m_edit.SetWindowText(*strEdit);
 }
+
+
 
 void ChatDialog::DisplayMessage(string name, string message)
 {
