@@ -50,7 +50,7 @@ BOOL CRandomChattingApp::InitInstance()
 
 	if(!AfxSocketInit())
 	{
-		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
+		//AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
 		return FALSE;
 	}
 

@@ -13,4 +13,7 @@ public:
 	void SetListenSocket(CAsyncSocket* pSocket);
 	void OnClose(int nErrorCode);
 	void OnReceive(int nErrorCode);
+
+public:
+	CAsyncSocket* m_pListenSocket;
 };

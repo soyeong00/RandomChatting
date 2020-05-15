@@ -196,6 +196,7 @@
     <ClInclude Include="RandomChattingDlg.h" />
     <ClInclude Include="Request.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ServerDialog.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +216,7 @@
     <ClCompile Include="RandomChatting.cpp" />
     <ClCompile Include="RandomChattingDlg.cpp" />
     <ClCompile Include="Request.cpp" />
+    <ClCompile Include="ServerDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RandomChatting.rc" />

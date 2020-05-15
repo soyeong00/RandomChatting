@@ -16,15 +16,15 @@ CListenSocket::~CListenSocket()
 {
 }
 
-void CListenSocket::OnAccept(int eErrorCode)
+void CListenSocket::OnAccept(int nErrorCode) // 사용자가 추가되었을때
 {
 }
 
-void CListenSocket::CloseClientSocket(CSocket* pClient)
+void CListenSocket::CloseClientSocket(CSocket* pClient) // Client 접속이 끊겼을때
 {
 }
 
-void CListenSocket::SendAllMessage(TCHAR* pszMessage)
+void CListenSocket::SendAllMessage(TCHAR* pszMessage) // Client가 보낸 메시지가 있을 때
 {
 }
 
