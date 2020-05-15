@@ -25,7 +25,7 @@ void Request::SendRequestToAnyone(string inviter)
 	sockaddr_in server;
 	server.sin_family = AF_INET; //AF_INET =IPv4 address 를 쓰겠다고 해주는거
 	server.sin_port = htons(54000); //포트 지정
-	PCSTR ip = "192.168.43.255"; //접속해있는 ip
+	PCSTR ip = "192.168.43.255"; //접속해있는 ip //보낼곳
 	inet_pton(AF_INET, ip, &server.sin_addr);//string을 byte array로 변환 해주는 방법
 
 	//Socket만들기 :Socket의 형은 datagram
@@ -111,4 +111,28 @@ void Request::WaitForInvite()
 		// Convert from byte array to chars
 		inet_ntop(AF_INET, &client.sin_addr, clientIp, 256);
 	}
+}
+
+void Request::SendMessageRequest(string ip, string message)
+{
+	WSADATA data;
+	WORD version = MAKEWORD(2, 2);
+	int wsOk = WSAStartup(version, &data);
+	if (wsOk != 0)
+		return;
+	sockaddr_in server;
+	server.sin_family = AF_INET; //AF_INET =IPv4 address 를 쓰겠다고 해주는거
+	server.sin_port = htons(54000); //포트 지정
+	PCSTR pcstrIP = ip.c_str();
+	inet_pton(AF_INET, pcstrIP, &server.sin_addr);
+	SOCKET out = socket(AF_INET, SOCK_DGRAM, 0);
+	//sends message
+	int sendOk = sendto(out, message.c_str(), message.size() + 1, 0, (sockaddr*)&server, sizeof(server));
+	if (sendOk == SOCKET_ERROR)
+	{
+	}
+	//소켓을 닫는다
+	closesocket(out);
+	//close down Winsock
+	WSACleanup();
 }
