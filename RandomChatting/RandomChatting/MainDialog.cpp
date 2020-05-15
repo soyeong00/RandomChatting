@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include <atlconv.h>
+#include "ChatDialog.h"
 #pragma comment(lib, "ws2_32.lib")
 
 // MainDialog 대화 상자
@@ -16,7 +17,7 @@
 IMPLEMENT_DYNAMIC(MainDialog, CDialogEx)
 
 MainDialog::MainDialog(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MainDialog, pParent)
+	: CDialogEx(IDD_MainDialog, pParent), mName(nullptr), m_IsWorkingThread(FALSE), ip()
 	, mGuest(_T(""))
 	, invDialog(nullptr)
 {
@@ -37,6 +38,8 @@ BEGIN_MESSAGE_MAP(MainDialog, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &MainDialog::OnBnClickedButton2)
 	ON_MESSAGE(MESSAGE_RANDOM_CHAT, &MainDialog::UpdateIp)
 	ON_BN_CLICKED(IDC_BUTTON1, &MainDialog::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON4, &MainDialog::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON3, &MainDialog::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 UINT ThreadForWaiting(LPVOID param)
@@ -83,14 +86,13 @@ UINT ThreadForWaiting(LPVOID param)
 	ssBuf >> inviter >> wanting;
 	main->invitingName = inviter.c_str();
 	main->wantingName = wanting.c_str();
-	/*if (wanting.compare("") == 0) 
+	/*if (wanting.compare("") == 0)
 		postmessage(main->m_hwnd, message_random_chat, null, null);
 	else if(wanting.compare(ct2ca(*main->mname)) == 0)
 		postmessage(main->m_hwnd, message_random_chat, null, null);*/
 
-		
-	//=============종은추가코드============//
-	// Convert from byte array to chars
+		//=============종은추가코드============//
+		// Convert from byte array to chars
 	inet_ntop(AF_INET, &client.sin_addr, clientIp, 256);
 	main->ip = clientIp;
 	PostMessage(main->m_hWnd, MESSAGE_RANDOM_CHAT, NULL, NULL);
@@ -120,7 +122,7 @@ void MainDialog::OnBnClickedButton2()
 	{
 		//m_IsWorkingThread = false;
 
-		WaitForSingleObject(m_Thread->m_hThread,0);
+		WaitForSingleObject(m_Thread->m_hThread, 0);
 
 		SetDlgItemText(IDC_BUTTON2, _T("검색 시작"));
 	}
@@ -128,23 +130,25 @@ void MainDialog::OnBnClickedButton2()
 
 LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 {
-	if (this->wantingName.CompareNoCase((CString)"") == 0 && this->invitingName.CompareNoCase((LPCTSTR)(*(this->mName))) != 0) {
+	if(this->wantingName.CompareNoCase((CString) "") == 0 && this->invitingName.CompareNoCase((LPCTSTR) (*(this->mName))) != 0)
+	{
 		WaitForSingleObject(m_Thread->m_hThread, 0);
 		ReceiveRequest();
-		SetDlgItemText(IDC_STATIC_COUNT, (CString)"CorrectInvite");
+		SetDlgItemText(IDC_STATIC_COUNT, (CString) "CorrectInvite");
 	}
-	else if ((this->wantingName.CompareNoCase((LPCTSTR)(*(this->mName)))) == 0) {
+	else if((this->wantingName.CompareNoCase((LPCTSTR) (*(this->mName)))) == 0)
+	{
 		WaitForSingleObject(m_Thread->m_hThread, 0);
 		ReceiveRequest();
-		SetDlgItemText(IDC_STATIC_COUNT, (CString)"CorrectInvite");
+		SetDlgItemText(IDC_STATIC_COUNT, (CString) "CorrectInvite");
 	}
 	else
 	{
 		WaitForSingleObject(m_Thread->m_hThread, 0);
 		m_Thread = AfxBeginThread(ThreadForWaiting, this);
-		SetDlgItemText(IDC_STATIC_COUNT, (CString)"NotYourInvite");
+		SetDlgItemText(IDC_STATIC_COUNT, (CString) "NotYourInvite");
 	}
-		
+
 	//SetDlgItemText(IDC_STATIC_COUNT, this->ip);
 	return 0;
 }
@@ -168,7 +172,7 @@ void MainDialog::runThread()
 void MainDialog::ReceiveRequest()
 {
 	// 초대 다이얼로그 생성
-	
+
 	if(invDialog == nullptr)
 	{
 		invDialog = new InvitationDialog();
@@ -176,9 +180,9 @@ void MainDialog::ReceiveRequest()
 
 	// 초대 다이얼로그 생성 된 경우
 	if(invDialog != nullptr)
-	{	
+	{
 		delete invDialog;
-		invDialog = new InvitationDialog();
+		invDialog = new InvitationDialog(this);
 		// 내 이름 값 전달
 		invDialog->myName = mName;
 		invDialog->main = this;
@@ -194,7 +198,7 @@ void MainDialog::OnBnClickedButton1()
 
 	// UDP 메시지 보내기
 	Request* req = new Request();
-	CString* str = &(CString)"";
+	CString* str = &(CString) "";
 	m_edit.GetWindowText(*str);
 	CT2CA pszConvertedAnsiString(*str);
 	std::string s(pszConvertedAnsiString);
@@ -211,4 +215,19 @@ void MainDialog::OnBnClickedButton1()
 	{
 		req->SendRequestByName(inviter, s);
 	}
+}
+
+void MainDialog::OnBnClickedButton4()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	ChatDialog* chat = new ChatDialog(this, this);
+	chat->main = this;
+	chat->DoModal();
+}
+
+void MainDialog::OnBnClickedButton3()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	PostQuitMessage(0);
 }

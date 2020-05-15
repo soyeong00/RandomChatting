@@ -11,8 +11,14 @@
 IMPLEMENT_DYNAMIC(ChatDialog, CDialogEx)
 
 ChatDialog::ChatDialog(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_ChatDialog, pParent), myName(nullptr), yourName(nullptr)
+	: CDialogEx(IDD_ChatDialog, pParent), myName(nullptr), yourName(nullptr), req(nullptr)
 {
+}
+
+ChatDialog::ChatDialog(CWnd* pParent, MainDialog* main)
+	: ChatDialog(pParent)
+{
+	this->main = main;
 }
 
 ChatDialog::~ChatDialog()
@@ -46,6 +52,12 @@ BOOL ChatDialog::OnInitDialog()
 
 	req = new Request();
 
+	myName = main->mName;
+	SetDlgItemText(IDC_STATIC_MYNAME, *myName + " 님");
+
+	yourName = &main->invitingName;
+	SetDlgItemText(IDC_STATIC_YOURNAME, *yourName);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -58,14 +70,29 @@ void ChatDialog::SendMsg()
 	CString* strInput = new CString();
 	m_input.GetWindowText(*strInput);
 
+	CT2CA pszConvertedAnsiString(*strInput);
+	std::string inputString(pszConvertedAnsiString);
+
 	m_input.SetWindowText(L"");
 
-	strEdit->Append(L"\r\n");
-	//strEdit->Append(*myName);
+	CString cs(string("\r\n").c_str());
+	strEdit->Append(cs);
+	if(myName != nullptr)
+	{
+		strEdit->Append(*myName);
+	}
+	cs = string(" : ").c_str();
+	strEdit->Append(cs);
 	strEdit->Append(*strInput);
 	m_edit.SetWindowText(*strEdit);
 
-	//req->SendMessageRequest(str, ip);
+	if(!main->ip.IsEmpty())
+	{
+		*pszConvertedAnsiString = *main->ip;
+		std::string ipString(pszConvertedAnsiString);
+
+		req->SendMessageRequest(ipString, inputString);
+	}
 }
 
 void ChatDialog::ReceiveMsg()
@@ -73,11 +100,21 @@ void ChatDialog::ReceiveMsg()
 	CString* strEdit = new CString();
 	m_edit.GetWindowText(*strEdit);
 
-	CString* strReceive = new CString();
-	//
+	CString cs(string("\r\n").c_str());
+	strEdit->Append(cs);
+	if(yourName != nullptr)
+	{
+		strEdit->Append(*yourName);
+	}
+	cs = string(" : ").c_str();
+	strEdit->Append(cs);
 
-	strEdit->Append(L"\r\n");
-	//strEdit->Append(*yourName);
-	strEdit->Append(*strEdit);
+	CString* strReceive = new CString(); //---> 받아온 값으로 초기화 필요
+	strEdit->Append(*strReceive);
+
 	m_edit.SetWindowText(*strEdit);
+}
+
+void ChatDialog::DisplayMessage(string name, string message)
+{
 }

@@ -166,9 +166,6 @@ void CRandomChattingDlg::OnBnClickedButton1()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
 	// Dialog 2개를 생성 후 화면에 전시합니다
-	ChatDialog* Dialog1 = new ChatDialog();
-
-	Dialog1->DoModal();
 }
 
 void CRandomChattingDlg::OnBnClickedButton2()

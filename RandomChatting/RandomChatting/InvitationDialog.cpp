@@ -39,7 +39,7 @@ void InvitationDialog::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	//
-	ChatDialog* chat = new ChatDialog();
+	ChatDialog* chat = new ChatDialog(this, main);
 	chat->DoModal();
 
 	CDialogEx::OnOK();
@@ -47,7 +47,7 @@ void InvitationDialog::OnBnClickedOk()
 
 void InvitationDialog::OnBnClickedCancel()
 {
-	this->main->runThread();
+	main->runThread();
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CDialogEx::OnCancel();
 }
