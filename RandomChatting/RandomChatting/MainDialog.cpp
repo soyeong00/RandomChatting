@@ -128,7 +128,12 @@ void MainDialog::OnBnClickedButton2()
 
 LRESULT MainDialog::UpdateIp(WPARAM wParam, LPARAM lParam)
 {
-	if (this->wantingName.CompareNoCase((LPCTSTR)"") == 0 || (this->wantingName.CompareNoCase((LPCTSTR) (* (this->mName))))==0) {
+	if (this->wantingName.CompareNoCase((CString)"") == 0 && this->invitingName.CompareNoCase((LPCTSTR)(*(this->mName))) != 0) {
+		WaitForSingleObject(m_Thread->m_hThread, 0);
+		ReceiveRequest();
+		SetDlgItemText(IDC_STATIC_COUNT, (CString)"CorrectInvite");
+	}
+	else if ((this->wantingName.CompareNoCase((LPCTSTR)(*(this->mName)))) == 0) {
 		WaitForSingleObject(m_Thread->m_hThread, 0);
 		ReceiveRequest();
 		SetDlgItemText(IDC_STATIC_COUNT, (CString)"CorrectInvite");
@@ -196,8 +201,8 @@ void MainDialog::OnBnClickedButton1()
 
 	// 입력 텍스트가 없으면 SendRequestToAnyone 실행
 	// 입력 텍스트가 있으면 SendRequestByName 실행
-	CT2CA CInviter(this->invitingName);
-	std::string inviter(CInviter);
+	CT2CA CInviter((*(this->mName)));
+	string inviter(CInviter);
 	if(s.empty())
 	{
 		req->SendRequestToAnyone(inviter);

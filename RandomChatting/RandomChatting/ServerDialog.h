@@ -22,7 +22,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CListBox m_List;
-	ServerDialog(CWnd* pParent = NULL);
+	//ServerDialog(CWnd* pParent = NULL);
 	CListenSocket m_ListenSocket;
 	CListBox* clientList;
 };

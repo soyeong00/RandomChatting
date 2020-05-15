@@ -3,7 +3,7 @@
 // MainDialog 대화 상자
 #include "InvitationDialog.h"
 
-#define MESSAGE_RANDOM_CHAT WM_USER
+#define MESSAGE_RANDOM_CHAT 9298
 
 class MainDialog : public CDialogEx
 {
@@ -37,7 +37,6 @@ public:
 	void SetName(CString* str);
 	void runThread();
 	void ReceiveRequest();
-
 	class InvitationDialog* invDialog;
 
 private:
