@@ -63,10 +63,10 @@ BOOL ChatDialog::OnInitDialog()
 
 	req = new Request();
 
-	myName = &main->mName;
+	myName = *main->mName;
 	SetDlgItemText(IDC_STATIC_MYNAME, myName + " 님");
 
-	yourName = &main->invitingName;
+	yourName = *main->invitingName;
 	SetDlgItemText(IDC_STATIC_YOURNAME, yourName);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -129,7 +129,7 @@ UINT ThreadForWaitingMessage(LPVOID param)
 	WSADATA data;
 	WORD version = MAKEWORD(2, 2);
 	int wsOk = WSAStartup(version, &data);
-	if (wsOk != 0)
+	if(wsOk != 0)
 	{
 		return 0;
 	}
@@ -138,23 +138,23 @@ UINT ThreadForWaitingMessage(LPVOID param)
 	serverHint.sin_addr.S_un.S_addr = ADDR_ANY; // Us any IP address available on the machine
 	serverHint.sin_family = AF_INET; // Address format is IPv4
 	serverHint.sin_port = htons(54000); // Convert from little to big endian
-	if (bind(in, (sockaddr*)&serverHint, sizeof(serverHint)) == SOCKET_ERROR)
+	if(bind(in, (sockaddr*) &serverHint, sizeof(serverHint)) == SOCKET_ERROR)
 	{
 		return 0;
 	}
 	sockaddr_in client; // Use to hold the client information (port / ip address)
 	int clientLength = sizeof(client); // The size of the client information
 	char buf[1024];
-	ChatDialog* chat = (ChatDialog*)param;
-	while (chat->m_IsChatting)
+	ChatDialog* chat = (ChatDialog*) param;
+	while(chat->m_IsChatting)
 	{
 		ZeroMemory(&client, clientLength); // Clear the client structure
 		ZeroMemory(buf, 1024); // Clear the receive buffer
 
 		// Wait for message
-		int bytesIn = recvfrom(in, buf, 1024, 0, (sockaddr*)&client, &clientLength);
+		int bytesIn = recvfrom(in, buf, 1024, 0, (sockaddr*) &client, &clientLength);
 
-		if (bytesIn == SOCKET_ERROR)
+		if(bytesIn == SOCKET_ERROR)
 		{
 		}
 		// Display message and client info
@@ -166,9 +166,9 @@ UINT ThreadForWaitingMessage(LPVOID param)
 		// Convert from byte array to chars
 		inet_ntop(AF_INET, &client.sin_addr, clientIp, 256);
 		//받아온 ip가 chattingIP인지 확인
-		if (chat->chattingIP.Compare((CString)clientIp) == 0)
+		if(chat->chattingIP.Compare((CString) clientIp) == 0)
 			chat->receivedChat = buf;
-			PostMessage(chat->m_hWnd, MESSAGE_CHAT_RECEIVED, NULL, NULL);
+		PostMessage(chat->m_hWnd, MESSAGE_CHAT_RECEIVED, NULL, NULL);
 	}
 	//소켓을 닫는다
 	closesocket(in);
@@ -183,7 +183,6 @@ void ChatDialog::DisplayMessage(string name, string message)
 
 void ChatDialog::OnBnClickedButton1()
 {
-
 	OnDestroy();
 	OnOK();
 
